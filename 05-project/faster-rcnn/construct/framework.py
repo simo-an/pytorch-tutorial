@@ -63,7 +63,6 @@ class FasterRCNN(FasterRCNNBase):
         self,
         backbone,   # 调用前指定 backbone
         roi_heads,
-        transform,
         num_classes=None,  # N + 1 (背景)
         # transform parameters
         min_size=800, max_size=1333,  # 最大、最小尺寸

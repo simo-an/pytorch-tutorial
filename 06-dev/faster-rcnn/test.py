@@ -1,5 +1,7 @@
 from collections import OrderedDict
 
+import torch
+
 d1 = OrderedDict([('0', 'A'), ('1', 'B')])
 
 for k, v in d1.items():
@@ -18,3 +20,11 @@ print(k_set)
 ra = (1.0, 2.0, 4.0) * 8
 
 print(ra)
+
+image = torch.tensor([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+mean = torch.tensor([2, 5, 8])
+std = torch.tensor([2, 2, 2])
+
+print(
+    (image - mean[:, None, None]) / std[:, None, None]
+)
