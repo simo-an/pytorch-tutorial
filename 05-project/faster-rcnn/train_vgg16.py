@@ -3,8 +3,9 @@
 '''
 import os
 import torch
+from torch.utils.data.dataset import T
 import torchvision
-import torchvision.transforms as TF
+import transforms as TF
 
 from os import path
 from backbone import make_model
@@ -48,7 +49,8 @@ def main():
     print(f"Using {device} device training")
 
     train_transform = TF.Compose([
-        TF.ToTensor()
+        TF.ToTensor(),
+        TF.RandomHorizontalFlip(0.5)
     ])
 
     train_dataset = TinyDataSet(transforms=train_transform)
@@ -62,7 +64,27 @@ def main():
     )
 
     model = create_model(num_classes=21)
-    print(model)
+    model.to(device)
+
+    params = [p for p in model.parameters() if p.requires_grad]
+    optimizer = torch.optim.SGD(params, 
+        lr=0.005,
+        momentum=0.9,
+        weight_decay=0.0005
+    )
+    model.train()
+
+    for i, [images, targets] in enumerate(train_data_loader):
+        images = list(image.to(device) for image in images)
+        # targets = [{ k: v.to(device) for k, v in t.items() } for t in targets]
+        loss_dict = model(images, targets)
+        losses = sum(loss for loss in loss_dict.values())
+        
+        optimizer.zero_grad()
+        losses.backward()
+        optimizer.step()
+    
+
 
 if __name__ == "__main__":
     main()

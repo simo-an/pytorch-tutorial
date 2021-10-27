@@ -43,7 +43,21 @@
 # print(args.appID)
 # print(args.verCode)
 
+import torch
+
+
 def func(a, b, c):
     print(a, b , c)
 
 func(*[1, 2, 3])
+
+bbox = torch.Tensor([[1, 2, 3, 4], [2, 4, 6, 8]])
+
+# bbox[:, [0, 2]] = 2 - bbox[:, [0, 2]]
+
+user = {
+    "name": "Tom",
+    "age": 19
+}
+
+print(user.items())

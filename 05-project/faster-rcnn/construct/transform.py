@@ -2,7 +2,6 @@ from typing import List
 import torch
 from torch import Tensor
 import torch.nn as nn
-from torch.nn.modules.module import Module
 
 class RCNNImageTransform(nn.Module):
     def __init__(self, 
@@ -46,3 +45,11 @@ class RCNNImageTransform(nn.Module):
         raw_image_sizes
     ):
         pass
+
+    def forward(self,
+        images,         # type: List[Tensor]
+        targets=None
+    ):
+        print(len(images))
+
+        return images, targets

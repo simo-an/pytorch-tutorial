@@ -164,4 +164,9 @@ class FasterRCNN(FasterRCNNBase):
             image_std=image_std
         )
 
-        super(FasterRCNN, self).__init__(backbone, rpn, roi_heads, transform)
+        super(FasterRCNN, self).__init__(
+            transform=transform,
+            backbone=backbone,
+            rpn=rpn,
+            roi_heads=roi_heads
+        )
