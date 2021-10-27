@@ -62,7 +62,7 @@ class FasterRCNN(FasterRCNNBase):
     def __init__(
         self,
         backbone,   # 调用前指定 backbone
-        roi_heads,
+        roi_heads=None,
         num_classes=None,  # N + 1 (背景)
         # transform parameters
         min_size=800, max_size=1333,  # 最大、最小尺寸
@@ -98,15 +98,15 @@ class FasterRCNN(FasterRCNNBase):
 
         # 定义区域建议网络 RPN
         rpn = RPN(
-            rpn_anchor_generator=rpn_anchor_generator,
+            anchor_generator=rpn_anchor_generator,
             rpn_head=rpn_head,
-            rpn_ps_iou_thresh_hold=rpn_ps_iou_thresh_hold,
-            rpn_ns_iou_thresh_hold=rpn_ns_iou_thresh_hold,
-            rpn_batch_size_per_image=rpn_batch_size_per_image,
-            rpn_positive_fraction=rpn_positive_fraction,
-            rpn_pre_nms_top_n=rpn_pre_nms_top_n,
-            rpn_post_nms_top_n=rpn_post_nms_top_n,
-            rpn_nms_thresh_hold=rpn_nms_thresh_hold,
+            ps_iou_thresh_hold=rpn_ps_iou_thresh_hold,
+            ns_iou_thresh_hold=rpn_ns_iou_thresh_hold,
+            batch_size_per_image=rpn_batch_size_per_image,
+            positive_fraction=rpn_positive_fraction,
+            pre_nms_top_n=rpn_pre_nms_top_n,
+            post_nms_top_n=rpn_post_nms_top_n,
+            nms_thresh_hold=rpn_nms_thresh_hold,
             score_thresh_hold=rpn_score_thresh
         )
 
@@ -137,17 +137,17 @@ class FasterRCNN(FasterRCNNBase):
         
         # 构建ROI Head
         roi_heads = RoIHeads(
-            box_roi_pool=box_roi_pool,
+            box_roi_pooling=box_roi_pool,
             box_flatten_head=box_flatten_head,
             box_predictor=box_predictor,
-            box_ps_iou_thresh=box_ps_iou_thresh,
-            box_ns_iou_thresh=box_ns_iou_thresh,
-            box_batch_size_per_image=box_batch_size_per_image,
-            box_positive_fraction=box_positive_fraction,
+            ps_iou_thresh_hold=box_ps_iou_thresh,
+            ns_iou_thresh_hold=box_ns_iou_thresh,
+            batch_size_per_image=box_batch_size_per_image,
+            positive_fraction=box_positive_fraction,
             bbox_reg_weight=bbox_reg_weights,
-            box_score_thresh_hold=box_score_thresh_hold,
-            box_nms_thresh_hold=box_nms_thresh_hold,
-            box_detections_per_img=box_detections_per_img
+            score_thresh_hold=box_score_thresh_hold,
+            nms_thresh_hold=box_nms_thresh_hold,
+            detection_per_img=box_detections_per_img
         )
 
         # 设置默认均值与方差

@@ -4,11 +4,12 @@
 '''
 import torch
 import json
-import utils
 from torch.utils.data import Dataset
 from PIL import Image
 from os import path
 from lxml import etree
+
+from .utils import parse_xml_to_dict
         
 
 class VOCDataset(Dataset):
@@ -60,7 +61,7 @@ class VOCDataset(Dataset):
         xml_reader = open(xml_path)
         xml_text = xml_reader.read()
         xml = etree.fromstring(xml_text)
-        annotation = utils.parse_xml_to_dict(xml)['annotation']
+        annotation = parse_xml_to_dict(xml)['annotation']
 
         return annotation
 
@@ -114,7 +115,7 @@ class VOCDataset(Dataset):
         xml_text = xml_reader.read()
 
         xml = etree.fromstring(xml_text)
-        annotation = utils.parse_xml_to_dict(xml)['annotation']
+        annotation = parse_xml_to_dict(xml)['annotation']
 
         width = int(annotation['size']['width'])
         height = int(annotation['size']['height'])
