@@ -29,6 +29,7 @@ class VGG(nn.Module):
             self.load_state_dict(torch.load(weights_path))
     
     def forward(self, image):
+        print(image.shape)
         # 224 * 224 * 3
         image = self.features(image)
         # 512 * 7 * 7

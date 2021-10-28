@@ -10,6 +10,7 @@ from .roi_head import RoIHeads, FlattenHead, FastRCNNPredictor
 from .transform import RCNNImageTransform
 
 class FasterRCNNBase(nn.Module):
+    transform: RCNNImageTransform
     def __init__(self, transform, backbone, rpn, roi_heads):
         super(FasterRCNNBase, self).__init__()
         self.transform = transform
@@ -31,11 +32,11 @@ class FasterRCNNBase(nn.Module):
             raw_image_shape.append((image.shape[1], image.shape[2]))
 
         # Normalize & Resize
-        images, targets = self.transform(images, targets)  # 对图像进行预处理
+        images, targets = self.transform(images, targets)  # 对图像进行预处理 ImageList
 
         # 将图像输入到 backbone 得到特征图 并存放在 有序字典中
-        feature_maps = self.backbone(images.tensors)
-        feature_maps = OrderedDict([('0', feature_maps)]) # 一层特征图    
+        feature_maps = self.backbone(images.image_list)
+        feature_maps = OrderedDict([('0', feature_maps)]) # 一层特征图
 
         # 将特征图输入到RPN中，得到 proposals 以及对应的 loss
         proposals, proposal_losses = self.rpn(images, feature_maps, targets)
@@ -48,8 +49,10 @@ class FasterRCNNBase(nn.Module):
             targets
         )
         # 将预测的bboxes还原到原始图像尺度上
-        detections = self.transform.post_process(
-            detections, images, raw_image_shape
+        detections = self.transform.postprocess(
+            detections, 
+            images, 
+            raw_image_shape
         )
 
         losses = {}
@@ -65,7 +68,7 @@ class FasterRCNN(FasterRCNNBase):
         roi_heads=None,
         num_classes=None,  # N + 1 (背景)
         # transform parameters
-        min_size=800, max_size=1333,  # 最大、最小尺寸
+        min_size=600, max_size=1200,  # 最大、最小尺寸
         image_mean=None, image_std=None,  # 均值和方差
         # RPN parameters
         rpn_anchor_generator=None, rpn_head=None,  # conv -> 分类 & 回归
@@ -152,9 +155,9 @@ class FasterRCNN(FasterRCNNBase):
 
         # 设置默认均值与方差
         if image_mean is None:
-            image_mean = [0.485, 0.456, 0.406]
+            image_mean = [0.485, 0.456, 0.406] # R G B 三层的均值
         if image_std is None:
-            image_std = [0.229, 0.224, 0.225]
+            image_std = [0.229, 0.224, 0.225] # R G B 三层的方差
 
         # 定义 transform
         transform = RCNNImageTransform(

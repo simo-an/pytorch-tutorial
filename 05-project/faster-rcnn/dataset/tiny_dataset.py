@@ -7,7 +7,6 @@ from lxml import etree
 from os import path
 
 from .utils import parse_xml_to_dict
-from .type import Target
 
 class TinyDataSet(Dataset):
     image_path: str # 图片路径
@@ -40,7 +39,7 @@ class TinyDataSet(Dataset):
         boxes = []
         labels = []
         iscrowd = []
-        
+
         for obj in data["object"]:
             xmin = float(obj["bndbox"]["xmin"])
             xmax = float(obj["bndbox"]["xmax"])
@@ -61,13 +60,13 @@ class TinyDataSet(Dataset):
         image_id = torch.tensor([idx])
         area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
 
-        target = Target(
-            boxes = boxes,
-            labels = labels,
-            image_id = image_id,
-            iscrowd=iscrowd,
-            area=area
-        )
+        target = {
+            'boxes' : boxes ,
+            'labels' : labels,
+            'image_id' : image_id,
+            'iscrowd' : iscrowd,
+            'area' : area
+        }
 
         if self.transforms is not None:
             image, target = self.transforms(image, target)

@@ -46,18 +46,52 @@
 import torch
 
 
-def func(a, b, c):
-    print(a, b , c)
+# def func(a, b, c):
+#     print(a, b , c)
 
-func(*[1, 2, 3])
+# func(*[1, 2, 3])
 
-bbox = torch.Tensor([[1, 2, 3, 4], [2, 4, 6, 8]])
+# bbox = torch.Tensor([[1, 2, 3, 4], [2, 4, 6, 8]])
 
-# bbox[:, [0, 2]] = 2 - bbox[:, [0, 2]]
+# # bbox[:, [0, 2]] = 2 - bbox[:, [0, 2]]
 
-user = {
-    "name": "Tom",
-    "age": 19
+# user = {
+#     "name": "Tom",
+#     "age": 19
+# }
+
+# print(user.items())
+
+# image = torch.tensor([
+#     [[1, 2], [2, 3]], # R
+#     [[2, 4], [4, 6]], # G
+#     [[4, 6], [4, 2]]  # B
+# ])
+
+# mean = torch.tensor([2, 3, 4])
+# std = torch.tensor([2, 1, 2])
+
+# print(mean[:, None, None])
+# print(std[:, None, None])
+
+# result = (image - mean[:, None, None]) / std[:, None, None]
+
+# print(result)
+
+# k = (678,)
+# index = int(torch.empty(1).uniform_(0., float(len(k))).item())
+# print(k[index])
+
+box = torch.tensor([[1, 2, 3, 4], [11, 12, 13, 14]])
+
+print(box.unbind(1))
+
+print(torch.stack(box.unbind(1), dim=1))
+
+a = 1
+b = 'A'
+tar = {
+    'a': a,
+    'b': b
 }
-
-print(user.items())
+print(tar)

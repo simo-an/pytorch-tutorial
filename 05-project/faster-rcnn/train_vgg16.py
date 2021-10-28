@@ -76,13 +76,14 @@ def main():
 
     for i, [images, targets] in enumerate(train_data_loader):
         images = list(image.to(device) for image in images)
-        # targets = [{ k: v.to(device) for k, v in t.items() } for t in targets]
+        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+
         loss_dict = model(images, targets)
-        losses = sum(loss for loss in loss_dict.values())
+        # losses = sum(loss for loss in loss_dict.values())
         
-        optimizer.zero_grad()
-        losses.backward()
-        optimizer.step()
+        # optimizer.zero_grad()
+        # losses.backward()
+        # optimizer.step()
     
 
 

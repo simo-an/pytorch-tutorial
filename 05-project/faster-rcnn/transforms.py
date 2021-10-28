@@ -1,7 +1,6 @@
 import random
 import torch
 from torchvision.transforms import functional as F
-from dataset import Target
 
 '''组合多个Transforms'''
 class Compose(object):
@@ -26,15 +25,13 @@ class RandomHorizontalFlip(object):
     def __init__(self, prob=0.5):
         self.prob = prob
 
-    def __call__(self, image: torch.Tensor, target: Target):
+    def __call__(self, image: torch.Tensor, target):
         if random.random() < self.prob:
             height, width = image.shape[-2:]
             image = image.flip(-1)              # 水平翻转图像
             
-            print(target)
-
-            bbox = target.boxes
+            bbox = target['boxes']
             bbox[:, [0, 2]] = width - bbox[:, [2, 0]]
-            target.boxes = bbox
+            target['boxes'] = bbox
         
         return image, target
