@@ -15,3 +15,11 @@ def resize_boxes(boxes, raw_size, new_size):
     ymax = ymax * torch.tensor(ratios_height)
 
     return torch.stack((xmin, ymin, xmax, ymax), dim=1)
+
+def get_max_shape(shape_list: List[List[int]]) -> List[int]:
+    max_shape = shape_list[0]
+    for sub_shape in shape_list[1:]:
+        for idx, shape in enumerate(sub_shape):
+            max_shape[idx] = max(max_shape[idx], shape)
+    
+    return max_shape

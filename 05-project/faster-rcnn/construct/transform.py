@@ -1,10 +1,11 @@
 from typing import Dict, List, Optional, Tuple
 from torch import Tensor
+import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .utils import resize_boxes
+from .utils import resize_boxes, get_max_shape
 from .image_list import ImageList
 
 class RCNNImageTransform(nn.Module):
@@ -73,6 +74,23 @@ class RCNNImageTransform(nn.Module):
         size_divisible=32   # 将图片的宽高调整到 size_divisible 的整数倍
     ):
         # type: (List[Tensor], int) -> Tensor
+        # 获取一个batch的所有图片中最大的 channel、height、width
+        max_shape = get_max_shape([list(img.shape) for img in images])
+        stride = float(size_divisible)
+
+        # 宽高向上调整到 stride 的整数倍
+        max_shape[1] = int(math.ceil(max_shape[1] / stride) * stride)
+        max_shape[2] = int(math.ceil(max_shape[2] / stride) * stride)
+
+        batch_size = [len(images)] + max_shape
+
+        # 创建shape为batch，且全0的tensor, 与 image[0] 设备、类型相同
+        batch_image = images[0].new_full(batch_size, 0)
+
+        for img, pad_img in zip(images, batch_image):
+            pad_img[: img.shape[0], : img.shape[1], : img.shape[2]].copy_(img)
+
+        return batch_image
         
 
     '''对网络的预测结果进行后处理 - 主要将 bboxes 还原到原图尺寸上'''

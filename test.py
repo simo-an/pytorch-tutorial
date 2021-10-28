@@ -43,6 +43,7 @@
 # print(args.appID)
 # print(args.verCode)
 
+import math
 import torch
 
 
@@ -82,16 +83,45 @@ import torch
 # index = int(torch.empty(1).uniform_(0., float(len(k))).item())
 # print(k[index])
 
-box = torch.tensor([[1, 2, 3, 4], [11, 12, 13, 14]])
+# box = torch.tensor([[1, 2, 3, 4], [11, 12, 13, 14]])
 
-print(box.unbind(1))
+# print(box.unbind(1))
 
-print(torch.stack(box.unbind(1), dim=1))
+# print(torch.stack(box.unbind(1), dim=1))
 
-a = 1
-b = 'A'
-tar = {
-    'a': a,
-    'b': b
-}
-print(tar)
+# a = 1
+# b = 'A'
+# tar = {
+#     'a': a,
+#     'b': b
+# }
+# print(tar)
+
+shape_list = [
+    [3, 100, 200], [4, 50, 120], [3, 120, 180]
+]
+def get_max_attr(shape_list):
+    max_shape = shape_list[0]
+    for sub_shape in shape_list[1:]:
+        for idx, shape in enumerate(sub_shape):
+            max_shape[idx] = max(max_shape[idx], shape)
+    
+    return max_shape
+
+batch_shape = [2, 3, 4, 4]
+img = torch.ones([3, 2, 2])
+
+fill_image = torch.zeros(batch_shape)
+
+batch_image = img[0].new_full(batch_shape, 0)
+
+
+image1 = torch.zeros([3, 4, 5])
+image2 = torch.tensor([
+    [[1, 2], [3, 4]],
+    [[2, 4], [6, 8]],
+])
+
+image1[: image2.shape[0], : image2.shape[1], : image2.shape[2]].copy_(image2)
+
+print(image1)
