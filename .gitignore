@@ -1,5 +1,4 @@
 /VOCdevkit
-.vscode
 .idea
 /dataset
 /**/__pycache__/**/*
