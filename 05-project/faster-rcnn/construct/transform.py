@@ -99,6 +99,7 @@ class RCNNImageTransform(nn.Module):
         image_shapes,
         raw_image_sizes
     ):
+        # 测试时候需要
         pass
 
     def forward(self,

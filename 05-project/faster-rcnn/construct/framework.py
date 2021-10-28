@@ -11,6 +11,8 @@ from .transform import RCNNImageTransform
 
 class FasterRCNNBase(nn.Module):
     transform: RCNNImageTransform
+    rpn: RPN
+    roi_head: RoIHeads
     def __init__(self, transform, backbone, rpn, roi_heads):
         super(FasterRCNNBase, self).__init__()
         self.transform = transform
@@ -34,7 +36,7 @@ class FasterRCNNBase(nn.Module):
         # Normalize & Resize
         images, targets = self.transform(images, targets)  # 对图像进行预处理 ImageList
 
-        # 将图像输入到 backbone 得到特征图 并存放在 有序字典中
+        # 将图像输入到 backbone 得到特征图
         feature_maps = self.backbone(images.image_list)
         feature_maps = OrderedDict([('0', feature_maps)]) # 一层特征图
 
