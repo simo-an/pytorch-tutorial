@@ -13,7 +13,7 @@ input_size = 1
 num_classes = 10
 num_epochs = 5
 batch_size = 100
-lr = 0.01
+lr = 0.1
 
 # MNIST dataset (images and labels)
 train_dataset = torchvision.datasets.MNIST(

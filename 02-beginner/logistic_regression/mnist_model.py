@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.functional as F
+from torch.nn.modules import activation
 
 class MnistModel(nn.Module):
     def __init__(self, in_channels, num_classes):
