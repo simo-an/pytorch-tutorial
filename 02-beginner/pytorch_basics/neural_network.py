@@ -5,7 +5,7 @@ import torch.nn.functional as F
 # 模型构造
 ####
 '''
-1. 入门 - 多层感知机的两种实现
+    1. 入门 - 多层感知机的两种实现
 '''
 mlp_model1 = nn.Sequential(
     nn.Linear(20, 256),
@@ -24,7 +24,7 @@ class MLP(nn.Module):
 mlp_model2 = MLP()
 
 '''
-2. 自定义 Sequential
+    2. 自定义 Sequential
 '''
 class CustomSequential(nn.Module):
     def __init__(self, *layer_list):
@@ -39,7 +39,7 @@ class CustomSequential(nn.Module):
         return X
 
 '''
-3. 继承 nn.Module 与 Sequential 混用
+    3. 继承 nn.Module 与 Sequential 混用
 '''
 class NestMLP(nn.Module):
     def __init__(self):
