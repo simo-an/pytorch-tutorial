@@ -14,3 +14,12 @@ def parse_xml_to_dict(xml):
             result[child.tag].append(child_result[child.tag])
     
     return {xml.tag: result}
+
+class_dict = {
+    "crazing": 1,
+    "inclusion": 2,
+    "patches": 3,
+    "pitted_surface": 4,
+    "rolled-in_scale": 5,
+    "scratches": 6,
+}

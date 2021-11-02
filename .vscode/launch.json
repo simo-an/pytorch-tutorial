@@ -8,7 +8,7 @@
             "name": "Python: 当前文件",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}\\05-project\\faster-rcnn\\train_vgg16.py",
+            "program": "${workspaceFolder}\\05-project\\object_detection\\vgg16_train.py",
             "console": "integratedTerminal"
         }
     ]
