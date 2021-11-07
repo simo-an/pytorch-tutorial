@@ -6,12 +6,12 @@ from torchvision.ops import MultiScaleRoIAlign
 
 
 from .anchor_utils import AnchorGenerator
-from torchvision.models.detection.generalized_rcnn import GeneralizedRCNN
-from torchvision.models.detection.rpn import RPNHead, RegionProposalNetwork
-from torchvision.models.detection.roi_heads import RoIHeads
-from torchvision.models.detection.transform import GeneralizedRCNNTransform
+from .base_rcnn import FasterRCNNBase
+from .transform import RCNNImageTransform
+from .rpn import RPNHead, RegionProposalNetwork
+from .roi_heads import RoIHeads
 
-class FasterRCNN(GeneralizedRCNN):
+class FasterRCNN(FasterRCNNBase):
     def __init__(self, backbone, num_classes=None,
                  # transform parameters
                  min_size=800, max_size=1333,
@@ -102,7 +102,7 @@ class FasterRCNN(GeneralizedRCNN):
             image_mean = [0.485, 0.456, 0.406]
         if image_std is None:
             image_std = [0.229, 0.224, 0.225]
-        transform = GeneralizedRCNNTransform(min_size, max_size, image_mean, image_std)
+        transform = RCNNImageTransform(min_size, max_size, image_mean, image_std)
 
         super(FasterRCNN, self).__init__(backbone, rpn, roi_heads, transform)
 
