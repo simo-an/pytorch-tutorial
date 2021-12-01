@@ -1,6 +1,7 @@
 /VOCdevkit
 .idea
 /dataset
+/**/dataset
 /**/__pycache__/**/*
 /**/*.pth
 /**/NEU-DET/**/*
