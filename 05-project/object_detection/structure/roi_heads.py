@@ -1,1 +1,0 @@
-from torchvision.models.detection.roi_heads import RoIHeads
