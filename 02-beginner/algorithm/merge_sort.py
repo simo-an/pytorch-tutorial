@@ -37,8 +37,6 @@ def merge_sort(a: List[int], left: int, right: int):
     
     mid = (left + right)//2
 
-    print(left, mid, right)
-
     merge_sort(a, left, mid)
     merge_sort(a, mid+1, right)
     merge(a, left, mid+1, right)
